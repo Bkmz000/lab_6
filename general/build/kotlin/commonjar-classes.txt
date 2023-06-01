@@ -1,0 +1,1 @@
+C:\itmo\labs\kotlin\lab_6\common\build\classes\kotlin\main\MainKt.class
