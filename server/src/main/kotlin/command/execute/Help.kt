@@ -1,8 +1,8 @@
 package server.command.execute
 
+import command.execute.AllExecuteCommands
 import execute.packets.ExecutePacket
 import org.koin.core.component.KoinComponent
-import server.command.execute.samples.AllExecuteCommands
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.full.declaredMemberProperties

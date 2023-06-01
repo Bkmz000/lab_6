@@ -1,33 +1,10 @@
-
-
-import org.koin.java.KoinJavaComponent.inject
-import java.net.InetSocketAddress
-
-class StartApp {
+object StartApp {
 
 
     fun start(){
+        ServerHandler.process()
+        println("--Connection with the server lost. Try to restart app later")
 
-        ServerProcessing.process()
-
-
-
-
-
-//        println("Welcome to the CLI \"Product Collection\"")
-//        while(true) {
-//            val messageFromUser = readln()
-//            val commandPacket = ExecutePacketBuilder.getExecutePacket(messageFromUser)
-//
-//
-//            if(commandPacket != null) {
-//                val requestPacket = RequestPacket(RequestType.COMMAND_EXECUTE, commandPacket)
-//                println(requestPacket)
-//            } else {
-//
-//                println("Unknown command")
-//            }
-//        }
     }
 
 }

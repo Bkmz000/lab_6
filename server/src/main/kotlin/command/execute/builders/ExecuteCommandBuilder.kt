@@ -1,9 +1,9 @@
 package server.command.execute.builders
 
+import command.execute.AllExecuteCommands
 import execute.packets.ExecutePacket
 import org.koin.core.component.KoinComponent
 import server.command.execute.ClientCommand
-import server.command.execute.samples.AllExecuteCommands
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.primaryConstructor
 

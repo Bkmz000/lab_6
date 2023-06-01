@@ -8,7 +8,7 @@ class Update(executePacket: ExecutePacket) : ClientCommand(executePacket) {
 
     override val name: String = "update"
 
-    private val productId = executePacket.listOfNumberArgs!![0] as Int
+    private val productId = executePacket.listOfIntArgs!![0] as Int
     private val product = executePacket.product as Product
 
     companion object{

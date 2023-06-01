@@ -24,6 +24,8 @@ object AllExecuteSamples {
         addSample(ExecuteSample("info", NON_ARGUMENT))
         addSample(ExecuteSample("clear", NON_ARGUMENT))
         addSample(ExecuteSample("execute_script", SCRIPT, listOf("String")))
+
+        addSample(ExecuteSample("reconnect", NON_ARGUMENT))
     }
 
     fun addSample(executeSample: ExecuteSample) {

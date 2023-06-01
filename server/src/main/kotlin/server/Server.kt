@@ -1,13 +1,14 @@
 package server.server
 
+import ServerAddress.serverAddress
 import com.google.gson.GsonBuilder
-import server.command.interpritation.CommandManager
-import java.net.InetSocketAddress
+import server.command.interpritation.RequestFromClientHandler
 import java.nio.ByteBuffer
 import java.nio.channels.DatagramChannel
 
-class Server(private val address : InetSocketAddress ) {
+object Server {
 
+    private val address = serverAddress
     private val gson = GsonBuilder().create()
 
 
@@ -30,7 +31,7 @@ class Server(private val address : InetSocketAddress ) {
             if(clientAddress != null){
                 buffer.clear()
                 println(messageFromClient)
-                val resultOfRequest = CommandManager.interpretationRequestAndGetResult(messageFromClient)
+                val resultOfRequest = RequestFromClientHandler.interpretationRequestAndGetResult(messageFromClient)
                 val resultAsJson = gson.toJson(resultOfRequest)
 
                 val resultAsBuffer = ByteBuffer.wrap(resultAsJson.toByteArray())

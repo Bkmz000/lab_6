@@ -2,13 +2,13 @@ package server.command.execute
 
 import execute.packets.ExecutePacket
 import org.koin.core.component.inject
-import server.command.invoke.CommandInvoker
+import server.command.invoke.ExecuteInvoker
 
 class History(executePacket: ExecutePacket) : ClientCommand(executePacket) {
 
     override val name: String = "history"
 
-    private val commandInvoker by inject<CommandInvoker>()
+    private val commandInvoker by inject<ExecuteInvoker>()
 
     override fun execute(): String {
         val listOfCommands = ArrayList<String>()

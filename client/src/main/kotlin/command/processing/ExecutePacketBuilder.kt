@@ -22,10 +22,10 @@ object ExecutePacketBuilder : KoinComponent {
                                             .let { if(it.isNotEmpty()) it[0] else return null }
 
         val executeCommandPacket = when(commandSample.type) {
-            ARGUMENT -> getArgumentCommandPacket(commandSample, listOfWords)
-            OBJECT -> getObjectCommandPacket(commandSample, listOfWords)
-            NON_ARGUMENT -> getNonArgumentCommandPacket(commandSample, listOfWords)
-            SCRIPT -> getScriptCommandPacket(commandSample, listOfWords)
+            ARGUMENT -> getArgumentExecutePacket(commandSample, listOfWords)
+            OBJECT -> getObjectExecutePacket(commandSample, listOfWords)
+            NON_ARGUMENT -> getNonArgumentExecutePacket(commandSample, listOfWords)
+            SCRIPT -> getScriptExecutePacket(commandSample, listOfWords)
         }
 
         return executeCommandPacket
@@ -44,32 +44,36 @@ object ExecutePacketBuilder : KoinComponent {
     }
 
 
-    private fun getNonArgumentCommandPacket(executeSample: ExecuteSample, listOfWords: MutableList<String>) : ExecutePacket?{
+    private fun getNonArgumentExecutePacket(executeSample: ExecuteSample, listOfWords: MutableList<String>) : ExecutePacket?{
         return if(listOfWords.isEmpty()) ExecutePacket(executeSample.name) else null
     }
 
-    private fun getArgumentCommandPacket(executeSample: ExecuteSample, possibleArgs: MutableList<String>) : ExecutePacket? {
+    private fun getArgumentExecutePacket(executeSample: ExecuteSample, possibleArgs: MutableList<String>) : ExecutePacket? {
         val commandArgs = possibleArgs.tryCastListAs(executeSample.typeOfArgs!!) ?: return null
         commandArgs as MutableList<Int>
-        return ExecutePacket(executeSample.name, listOfNumberArgs = commandArgs )
+        return ExecutePacket(executeSample.name, listOfIntArgs = commandArgs )
 
     }
 
-    private fun getObjectCommandPacket(executeSample: ExecuteSample, possibleArgs: MutableList<String>) : ExecutePacket? {
+    private fun getObjectExecutePacket(executeSample: ExecuteSample, possibleArgs: MutableList<String>) : ExecutePacket? {
         val commandArg = possibleArgs.tryCastListAs(executeSample.typeOfArgs!!) ?: return null
         commandArg as MutableList<Int>
 
         val product = ProductBuilderCLI().build() ?: return null
 
-        return ExecutePacket(executeSample.name, listOfNumberArgs =  commandArg, product =  product)
+        return ExecutePacket(executeSample.name, listOfIntArgs =  commandArg, product =  product)
     }
 
-    private fun getScriptCommandPacket(executeSample: ExecuteSample, possibleFileName: MutableList<String>) : ExecutePacket? {
+    private fun getScriptExecutePacket(executeSample: ExecuteSample, possibleFileName: MutableList<String>) : ExecutePacket? {
         val fileName = possibleFileName[0]
         val fileWithScript = File(fileName).also { if (!it.isFile) return null }
-        val linesFromFile = fileWithScript.bufferedReader().readLines().toMutableList()
+        val stringsFromFile = fileWithScript.bufferedReader().readLines().toMutableList()
 
-        return ExecutePacket(executeSample.name, listOfStringArgs =  linesFromFile)
+        return ExecutePacket(executeSample.name, listOfStringArgs =  stringsFromFile)
+    }
+
+    private fun parseStringsToScriptExecutePacket(stringsFromFile: MutableList<String>) {
+
     }
 
 
@@ -93,7 +97,6 @@ object ExecutePacketBuilder : KoinComponent {
     private fun  String.tryCastStringAs(type: String) : Any? {
         return when(type) {
             "Int" -> this.toIntOrNull()
-            "Double" -> this.toDoubleOrNull()
             "String" -> this
             else -> return null
         }

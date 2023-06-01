@@ -1,0 +1,87 @@
+import client.command.processing.ExecutePacketBuilder
+import execute.packets.ExecutePacket
+import request.RequestPacket
+import request.RequestType.COMMAND_EXECUTE
+import request.RequestType.REFRESH_SAMPLES_INFORMATION
+import java.util.*
+
+object ServerHandler {
+
+    private const val timeOutNumber = 20
+    private var timeOutCounter = 0
+
+    private val needToSentMessages: Deque<RequestPacket> = LinkedList()
+    private val connectionRequestPacket = RequestPacket(REFRESH_SAMPLES_INFORMATION)
+
+
+    fun process(): Boolean{
+
+        needToSentMessages.addFirst(connectionRequestPacket)
+        timeOutCounter = 0
+
+        mainLoop@
+        while (true) {
+
+            receiveUntilAnswer@
+            while (needToSentMessages.isNotEmpty()) {
+
+
+
+
+                    needToSentMessages.peekFirst()?. let {
+                        ChannelProcessor.send(it)
+                    }
+
+
+                    var requestPacketFromServer: RequestPacket? = null
+
+                    for (timeCount in 1..5) {
+                        requestPacketFromServer = ChannelProcessor.receive()
+                        if (requestPacketFromServer != null)
+                            break
+                        else {
+                            print("...Waiting for server respond {$timeCount}\r")
+                            Thread.sleep(300)
+                        }
+                    }
+
+                    if(requestPacketFromServer == null) {
+                        if(timeOutCounter >= timeOutNumber) return false else timeOutCounter++
+
+                        if (!needToSentMessages.contains(connectionRequestPacket))
+                            needToSentMessages.addFirst(connectionRequestPacket)
+                    } else {
+                        if(requestPacketFromServer.requestType == COMMAND_EXECUTE) {
+                            ServerRequestProcessor.processAndPrintResult(requestPacketFromServer)
+                            needToSentMessages.clear()
+                            break@receiveUntilAnswer
+
+                        } else {
+                            needToSentMessages.pollFirst()
+                            ServerRequestProcessor.processAndPrintResult(requestPacketFromServer)
+                        }
+                    }
+            }
+
+            val requestPacketFromClient = getRequestPacketFromClientByCLI()
+            needToSentMessages.addFirst(requestPacketFromClient)
+        }
+    }
+
+
+
+    private fun getRequestPacketFromClientByCLI(): RequestPacket {
+        var executePacketFromClient: ExecutePacket?
+        do {
+            println("--Write down the command:")
+            val messageFromClient = readln()
+            executePacketFromClient = ExecutePacketBuilder.getByMessage(messageFromClient)
+            if (executePacketFromClient == null) println("--Unknown command")
+        } while (executePacketFromClient == null)
+        return RequestPacket(COMMAND_EXECUTE, executePacket = executePacketFromClient)
+    }
+
+
+
+
+}

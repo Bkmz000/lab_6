@@ -6,7 +6,7 @@ class RemoveGreaterKey(executePacket: ExecutePacket) : ClientCommand(executePack
 
     override val name: String = "remove_greater_key"
 
-    private val productId = executePacket.listOfNumberArgs!![0] as Int
+    private val productId = executePacket.listOfIntArgs!![0] as Int
 
     override fun execute(): String {
         return if(productCollection.products.entries.removeAll { it.key > productId }){
