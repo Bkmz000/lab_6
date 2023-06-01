@@ -8,13 +8,12 @@ import execute.packets.ExecutePacket
 import execute.sample.ExecuteSample
 import execute.sample.ExecuteType.*
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.io.File
 
 object ExecutePacketBuilder : KoinComponent {
 
 
-    fun getExecutePacket(message: String) : ExecutePacket?{
+    fun getByMessage(message: String) : ExecutePacket?{
 
         val listOfWords = message.toListWithoutBlanks() ?: return null
         val commandName = listOfWords.removeFirst()

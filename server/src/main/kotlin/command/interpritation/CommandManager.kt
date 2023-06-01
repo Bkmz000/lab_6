@@ -3,10 +3,8 @@ package server.command.interpritation
 import com.google.gson.GsonBuilder
 import execute.packets.ExecutePacket
 import request.RequestPacket
-import request.RequestType
 import request.RequestType.*
 import server.command.execute.builders.ExecuteCommandBuilder
-import server.command.execute.samples.AllExecuteCommands
 import server.command.execute.samples.AllExecuteCommands.samples
 import server.command.invoke.CommandInvoker
 
@@ -30,7 +28,7 @@ object CommandManager {
                 RequestPacket(COMMAND_EXECUTE, message = result)
             }
 
-            CONNECTION_WITH_COMMANDS -> RequestPacket(CONNECTION_WITH_COMMANDS, executeSamples =  samples)
+            REFRESH_SAMPLES_INFORMATION -> RequestPacket(REFRESH_SAMPLES_INFORMATION, executeSamples =  samples)
         }
 
         return resultOfRequest

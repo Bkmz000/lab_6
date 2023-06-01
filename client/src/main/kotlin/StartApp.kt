@@ -1,18 +1,14 @@
 
 
+import org.koin.java.KoinJavaComponent.inject
 import java.net.InetSocketAddress
 
 class StartApp {
 
 
-
-
     fun start(){
 
-        val address = InetSocketAddress("localhost", 6653)
-
-        Server(address)
-            .getResult()
+        ServerProcessing.process()
 
 
 

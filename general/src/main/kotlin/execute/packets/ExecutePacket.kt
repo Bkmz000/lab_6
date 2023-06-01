@@ -6,7 +6,7 @@ import product.Product
 
 data class ExecutePacket(
     val commandName: String,
-    val listOfNumberArgs: MutableList<out Number>? = null,
+    val listOfNumberArgs: MutableList<Int>? = null,
     val listOfStringArgs: MutableList<String>? = null,
     val product: Product? = null,
     )

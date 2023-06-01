@@ -21,7 +21,7 @@ class notTheRealServer(private val address: InetSocketAddress) {
 
         while (true){
             val message = readln()
-            val executePacket = ExecutePacketBuilder.getExecutePacket(message)
+            val executePacket = ExecutePacketBuilder.getByMessage(message)
             if(executePacket == null) {
                 println("Unknown command")
                 continue

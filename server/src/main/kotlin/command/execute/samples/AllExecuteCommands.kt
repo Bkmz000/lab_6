@@ -1,5 +1,6 @@
 package server.command.execute.samples
 
+
 import execute.sample.ExecuteSample
 import execute.sample.ExecuteType.*
 import server.command.execute.*
@@ -27,6 +28,10 @@ object AllExecuteCommands {
         addExecuteCommand(ExecuteSample("info", NON_ARGUMENT), Info::class)
         addExecuteCommand(ExecuteSample("clear", NON_ARGUMENT), Clear::class)
         addExecuteCommand(ExecuteSample("execute_script", SCRIPT, listOf("String")), ExecuteScript::class)
+
+        addExecuteCommand(ExecuteSample("test", OBJECT,listOf("Int")), TestNewCommand::class)
+
+
     }
 
     private fun addExecuteCommand(executeSample: ExecuteSample, commandClass : KClass<out ClientCommand>){

@@ -3,7 +3,7 @@ import execute.sample.ExecuteType.*
 
 
 object AllExecuteSamples {
-    val samples = mutableListOf<ExecuteSample>()
+    val samples = mutableSetOf<ExecuteSample>()
 
     init{
         addSample(ExecuteSample("insert", OBJECT, listOf("Int")))
