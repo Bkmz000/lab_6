@@ -6,8 +6,8 @@ class ReplaceIfGreater(executePacket: ExecutePacket) : ClientCommand(executePack
 
     override val name: String = "replace_if_greater"
 
-    private val productId = executePacket.listOfIntArgs!![0] as Int
-    private val price: Int = executePacket.listOfIntArgs!![1] as Int
+    private val productId = executePacket.listOfIntArgs!![0]
+    private val price: Int = executePacket.listOfIntArgs!![1]
 
     override fun execute(): String {
         return if(productCollection.products.containsKey(productId)){

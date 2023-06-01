@@ -21,7 +21,6 @@ object RequestFromClientHandler {
 
         val typeOfRequest = requestPacket.requestType
         val executePacket = requestPacket.executePacket
-        val argumentsOfRequest = requestPacket.executeSamples
 
         val resultOfRequest = when(typeOfRequest){
             COMMAND_EXECUTE -> {

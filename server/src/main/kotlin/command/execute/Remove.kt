@@ -6,7 +6,7 @@ class Remove(executePacket: ExecutePacket) : ClientCommand(executePacket) {
 
     override val name: String = "remove"
 
-    private val productId = executePacket.listOfIntArgs!![0] as Int
+    private val productId = executePacket.listOfIntArgs!![0]
 
     override fun execute(): String {
         return if (productCollection.products.containsKey(productId)) {

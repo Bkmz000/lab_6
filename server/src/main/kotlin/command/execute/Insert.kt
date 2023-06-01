@@ -9,7 +9,7 @@ class Insert(executePacket: ExecutePacket) : ClientCommand(executePacket) {
 
     override val name: String = "insert"
 
-    private val productId = executePacket.listOfIntArgs!![0] as Int
+    private val productId = executePacket.listOfIntArgs!![0]
     private val product = executePacket.product as Product
 
     companion object{
