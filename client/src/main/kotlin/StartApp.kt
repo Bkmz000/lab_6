@@ -1,17 +1,18 @@
-package client
+
 
 import java.net.InetSocketAddress
 
 class StartApp {
 
 
+
+
     fun start(){
 
+        val address = InetSocketAddress("localhost", 6653)
 
-
-        val inetSocketAddress = InetSocketAddress("localhost", 6653)
-        val serv = Server(inetSocketAddress)
-        serv.start()
+        Server(address)
+            .getResult()
 
 
 

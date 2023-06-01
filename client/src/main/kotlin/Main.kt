@@ -1,5 +1,5 @@
 
-import client.StartApp
+import StartApp
 import client.modules.allModules
 import org.koin.core.context.startKoin
 import org.koin.java.KoinJavaComponent.inject

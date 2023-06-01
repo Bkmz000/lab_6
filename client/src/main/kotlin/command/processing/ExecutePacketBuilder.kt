@@ -13,13 +13,12 @@ import java.io.File
 
 object ExecutePacketBuilder : KoinComponent {
 
-    private val allCommandSamples by inject<AllExecuteSamples>()
 
     fun getExecutePacket(message: String) : ExecutePacket?{
 
         val listOfWords = message.toListWithoutBlanks() ?: return null
         val commandName = listOfWords.removeFirst()
-        val commandSample = allCommandSamples.samples
+        val commandSample = AllExecuteSamples.samples
                                             .filter { it.equals(commandName) }
                                             .let { if(it.isNotEmpty()) it[0] else return null }
 

@@ -2,9 +2,12 @@ package server.command.interpritation
 
 import com.google.gson.GsonBuilder
 import execute.packets.ExecutePacket
-import execute.packets.RequestPacket
-import execute.packets.RequestType.COMMAND_EXECUTE
+import request.RequestPacket
+import request.RequestType
+import request.RequestType.*
 import server.command.execute.builders.ExecuteCommandBuilder
+import server.command.execute.samples.AllExecuteCommands
+import server.command.execute.samples.AllExecuteCommands.samples
 import server.command.invoke.CommandInvoker
 
 object CommandManager {
@@ -26,6 +29,8 @@ object CommandManager {
                 val result = invokeExecuteCommandAndGetResult(executePacket!!)
                 RequestPacket(COMMAND_EXECUTE, message = result)
             }
+
+            CONNECTION_WITH_COMMANDS -> RequestPacket(CONNECTION_WITH_COMMANDS, executeSamples =  samples)
         }
 
         return resultOfRequest

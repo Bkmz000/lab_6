@@ -2,7 +2,7 @@ import execute.sample.ExecuteSample
 import execute.sample.ExecuteType.*
 
 
-class AllExecuteSamples {
+object AllExecuteSamples {
     val samples = mutableListOf<ExecuteSample>()
 
     init{

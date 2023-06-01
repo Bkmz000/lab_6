@@ -17,19 +17,21 @@ class Server(private val address : InetSocketAddress ) {
                             channel.bind(address)
                             channel.configureBlocking(false)
 
-        val buffer = ByteBuffer.allocateDirect(10000)
+        val buffer = ByteBuffer.allocate(10000)
         println("Server started...")
 
 
         while (true){
-
+            buffer.clear()
             val clientAddress = channel.receive(buffer)
             val messageFromClient = extractMessage(buffer)
+
+
             if(clientAddress != null){
                 buffer.clear()
+                println(messageFromClient)
                 val resultOfRequest = CommandManager.interpretationRequestAndGetResult(messageFromClient)
                 val resultAsJson = gson.toJson(resultOfRequest)
-                println(resultAsJson)
 
                 val resultAsBuffer = ByteBuffer.wrap(resultAsJson.toByteArray())
 
