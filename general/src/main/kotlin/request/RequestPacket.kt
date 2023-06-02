@@ -10,6 +10,10 @@ data class RequestPacket (
     val executePacket: ExecutePacket? = null,
     val executeSamples: List<ExecuteSample>? = null,
     ) {
+
+
+
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -22,4 +26,10 @@ data class RequestPacket (
     override fun hashCode(): Int {
         return requestType.hashCode()
     }
+
+    override fun toString(): String {
+        return "RequestPacket(requestType=$requestType, message=$message, executePacket=$executePacket, executeSamples=$executeSamples)"
+    }
+
+
 }

@@ -71,14 +71,15 @@ object ServerHandler {
 
 
     private fun getRequestPacketFromClientByCLI(): RequestPacket {
-        var executePacketFromClient: ExecutePacket?
+        var executePacketFromClient: Pair<ExecutePacket?, String?>
         do {
             println("--Write down the command:")
             val messageFromClient = readln()
-            executePacketFromClient = ExecutePacketBuilder.getByMessage(messageFromClient)
-            if (executePacketFromClient == null) println("--Unknown command")
-        } while (executePacketFromClient == null)
-        return RequestPacket(COMMAND_EXECUTE, executePacket = executePacketFromClient)
+            executePacketFromClient = ExecutePacketBuilder().getByMessage(messageFromClient)
+            if (executePacketFromClient.first == null)
+                println(executePacketFromClient.second)
+        } while (executePacketFromClient.first == null)
+        return RequestPacket(COMMAND_EXECUTE, executePacket = executePacketFromClient.first)
     }
 
 
