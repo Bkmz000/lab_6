@@ -5,10 +5,9 @@ import java.time.LocalDateTime
 @Suppress("PROVIDED_RUNTIME_TOO_LOW")
 @Serializable
 class Organization private constructor(
-    private val id: Int,
     val name: String,
-    private val fullName: String,
-    private val type: OrganizationType,
+    val fullName: String,
+    val type: OrganizationType,
     ){
 
     data class Builder (
@@ -25,16 +24,21 @@ class Organization private constructor(
 
 
         fun build(): Organization? {
-            if (isBuildEnough()){
-                val id = LocalDateTime.now().nano - LocalDateTime.of(1900,1,1,1,1).nano
-                return Organization(id,name!!,fullName!!,type!!)
+            return if (isBuildEnough()){
+                Organization(name!!,fullName!!,type!!)
             } else
-                return null
+                null
         }
     }
 
 
 
+
+
+
+    override fun toString(): String {
+        return "Organization(name='$name', fullName='$fullName', type=$type)"
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -42,18 +46,16 @@ class Organization private constructor(
 
         other as Organization
 
-        if (id != other.id) return false
-
-        return true
+        if (name != other.name) return false
+        if (fullName != other.fullName) return false
+        return type == other.type
     }
 
     override fun hashCode(): Int {
-        val prime = 345353
-        return id * prime
-    }
-
-    override fun toString(): String {
-        return "Organization(id=$id, name='$name', fullName='$fullName', type=$type)"
+        var result = name.hashCode()
+        result = 31 * result + fullName.hashCode()
+        result = 31 * result + type.hashCode()
+        return result
     }
 
 

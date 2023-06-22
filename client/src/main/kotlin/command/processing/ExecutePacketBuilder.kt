@@ -133,4 +133,8 @@ class ExecutePacketBuilder : KoinComponent {
         }
     }
 
+//    fun f1(crossinline block: String.() -> Unit){
+//        block()
+//    }
+//теория категорий
 }

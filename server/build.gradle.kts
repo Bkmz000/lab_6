@@ -14,6 +14,7 @@ repositories {
     mavenLocal()
 }
 
+
 dependencies {
     testImplementation(kotlin("test"))
     implementation("com.google.devtools.ksp:symbol-processing-api:1.8.10-1.0.9")
@@ -23,6 +24,10 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     implementation(project(":general"))
+    implementation("org.jetbrains.exposed:exposed-core:0.40.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.40.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.40.1")
+    implementation("org.postgresql:postgresql:42.2.2")
 }
 
 tasks.jar {
