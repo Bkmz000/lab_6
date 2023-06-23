@@ -25,7 +25,7 @@ object ExecuteScriptBuilder {
             else
                 executePacketsFromFile.add(currentExecutePacket.first!!)
         }
-        return Pair(ExecutePacket(executeSample.name, listOfExecutePacketsForScript = executePacketsFromFile), null)
+        return Pair(ExecutePacket(executeSample.name, listOfExecutePacketsForScript = executePacketsFromFile, token = Token.token), null)
     }
 
     fun getStringsFromFileForBuildingProduct(): MutableList<String>?{

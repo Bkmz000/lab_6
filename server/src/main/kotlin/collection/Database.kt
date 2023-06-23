@@ -1,16 +1,18 @@
 package collection
 
-import collection.products.coordinateX
-import collection.products.coordinateY
-import collection.products.creationDate
-import collection.products.full_name
-import collection.products.manufacturer_name
-import collection.products.organization_type
-import collection.products.ownerName
-import collection.products.price
-import collection.products.productId
-import collection.products.productName
-import collection.products.unit_of_measure
+import collection.productsFromDataBase.coordinateX
+import collection.productsFromDataBase.coordinateY
+import collection.productsFromDataBase.creationDate
+import collection.productsFromDataBase.full_name
+import collection.productsFromDataBase.manufacturer_name
+import collection.productsFromDataBase.organization_type
+import collection.productsFromDataBase.ownerName
+import collection.productsFromDataBase.price
+import collection.productsFromDataBase.productId
+import collection.productsFromDataBase.productName
+import collection.productsFromDataBase.unit_of_measure
+import collection.usersFromDataBase.name
+import collection.usersFromDataBase.pass
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -34,15 +36,19 @@ object Database: KoinComponent {
     private val database = Database.connect(dataSource)
     private val currentSchema = Schema("public")
 
-    fun connect()  {
+
+
+    fun loadCollections(): String  {
+        loadUsersToApp()
         loadProductCollectionToApp()
+        return "The collection was loaded"
     }
 
 
     fun loadProductCollectionToApp(): String {
         transaction(database) {
             SchemaUtils.setSchema(currentSchema)
-            val requestResult = products.selectAll()
+            val requestResult = productsFromDataBase.selectAll()
 
             var currentProduct: Product?
             requestResult.forEach {
@@ -55,17 +61,31 @@ object Database: KoinComponent {
         return "The collection was loaded"
     }
 
+    private fun loadUsersToApp(): String {
+        transaction(database) {
+            SchemaUtils.setSchema(currentSchema)
+            val requestResult = usersFromDataBase.selectAll()
+
+            requestResult.forEach {
+                Users.loginPass[it[name]] = it[pass]
+            }
+
+        }
+
+        return "Success"
+    }
+
     fun loadProductCollectionToDatabase(): String {
         transaction(database) {
             SchemaUtils.setSchema(currentSchema)
             var currentProduct: Product
             var currentKey: Int
-            products.deleteAll()
+            productsFromDataBase.deleteAll()
             productCollection.products.forEach { that ->
                 currentProduct = that.value
                 currentKey = that.key
 
-                products.insert {
+                productsFromDataBase.insert {
                     it[productId] = currentKey
                     it[productName] = currentProduct.name
                     it[coordinateX] = currentProduct.coordinates.x
@@ -107,7 +127,7 @@ object Database: KoinComponent {
 
 }
 
-object products: Table("products_full") {
+object productsFromDataBase: Table("products_full") {
     val productId = integer("product_id")
     val productName = text("product_name")
     val coordinateX = integer("coordinate_x")
@@ -119,4 +139,9 @@ object products: Table("products_full") {
     val full_name = text("full_name")
     val organization_type = text("organization_type")
     val ownerName = text("owner_name")
+}
+
+object usersFromDataBase: Table("users") {
+    val name = text("name")
+    val pass = text("pass")
 }

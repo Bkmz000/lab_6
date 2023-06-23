@@ -3,6 +3,7 @@ package client.command.processing
 
 
 import AllExecuteSamples
+import Token
 import client.product.ProductBuilderCLI
 import command.processing.ExecuteScriptBuilder
 import command.processing.ExecuteScriptBuilder.getStringsFromFileForBuildingProduct
@@ -59,7 +60,7 @@ class ExecutePacketBuilder : KoinComponent {
     private fun getNonArgumentExecutePacket(executeSample: ExecuteSample, listOfWords: MutableList<String>) : Pair<ExecutePacket?, String?> {
 
             return if(listOfWords.isEmpty())
-                Pair(ExecutePacket(executeSample.name), null)
+                Pair(ExecutePacket(executeSample.name, token = Token.token), null)
             else
                 Pair(null, "--This command (${executeSample.name}) requires no arguments")
 
@@ -71,7 +72,7 @@ class ExecutePacketBuilder : KoinComponent {
             ?: return Pair(null, "--Invalid arguments of the (${executeSample.name}) command")
 
         commandArgs as MutableList<Int>
-        return Pair(ExecutePacket(executeSample.name, listOfIntArgs = commandArgs), null)
+        return Pair(ExecutePacket(executeSample.name, listOfIntArgs = commandArgs, token = Token.token), null,)
     }
 
     private fun getObjectExecutePacket(executeSample: ExecuteSample, possibleArgs: MutableList<String>) : Pair<ExecutePacket?, String?> {
@@ -90,7 +91,7 @@ class ExecutePacketBuilder : KoinComponent {
                 ?: return Pair(null, "--The product by command (${executeSample.name}) was not created")
         }
 
-        return Pair(ExecutePacket(executeSample.name, listOfIntArgs =  commandArg, product =  product),null)
+        return Pair(ExecutePacket(executeSample.name, listOfIntArgs =  commandArg, product =  product, token = Token.token),null)
 
     }
 

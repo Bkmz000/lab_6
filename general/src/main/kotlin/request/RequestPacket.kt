@@ -9,6 +9,8 @@ data class RequestPacket (
     var message: String? = null,
     val executePacket: ExecutePacket? = null,
     val executeSamples: List<ExecuteSample>? = null,
+    val login: String? = null,
+    val pass:String? = null,
     ) {
 
 

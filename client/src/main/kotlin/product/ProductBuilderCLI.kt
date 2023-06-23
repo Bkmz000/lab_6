@@ -1,5 +1,6 @@
 package client.product
 
+import Token
 import product.*
 
 class ProductBuilderCLI{
@@ -13,6 +14,7 @@ class ProductBuilderCLI{
         setPrice()
         setUnitOfMeasure()
         setOrganization()
+        setOwner()
         return product.build()
 
     }
@@ -68,6 +70,10 @@ class ProductBuilderCLI{
             "organization type (${enumValues<OrganizationType>().asList()}): ") { s: String -> checkIfOrganizationType(s)}
         organization.type(OrganizationType.valueOf(organizationType))
         organization.build()?.let { product.manufacturer(it) }
+    }
+
+    private fun setOwner() {
+        product.owner(Token.rightLogin)
     }
 
 

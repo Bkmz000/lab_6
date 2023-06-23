@@ -1,5 +1,7 @@
 package server.command.execute
 
+import collection.TokensForUser
+import collection.Users
 import execute.packets.ExecutePacket
 import product.Product
 
@@ -17,9 +19,15 @@ class Update(executePacket: ExecutePacket) : ClientCommand(executePacket) {
 
 
     override fun execute(): String {
-        return if (productCollection.products.containsKey(productId)) {
-            productCollection.products.replace(productId, product)
-            "Product was successfully updated"
+        val productFromCollection = productCollection.products[productId]
+        val ownerName = TokensForUser.userTokens[executePacket.token]
+        return if (productFromCollection != null) {
+            if(productFromCollection.owner == ownerName){
+                productCollection.products.replace(productId, product)
+                "Product was successfully updated"
+            } else {
+             "You don't have permission to update this product"
+            }
         } else { "There is no element with id $productId" }
     }
 }

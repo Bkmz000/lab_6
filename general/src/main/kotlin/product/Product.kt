@@ -21,7 +21,7 @@ class Product private constructor(
         private var price: Int? = null,
         private var unitOfMeasure: UnitOfMeasure? = null,
         private var manufacturer: Organization? = null,
-        private var owner: String? = "admin"
+        private var owner: String? = null
     ) {
         fun name(name: String) = apply { this.name = name }
         fun coordinates(coordinates: Coordinates) = apply { this.coordinates = coordinates }

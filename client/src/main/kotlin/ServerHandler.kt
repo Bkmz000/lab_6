@@ -1,14 +1,14 @@
 import client.command.processing.ExecutePacketBuilder
 import execute.packets.ExecutePacket
 import request.RequestPacket
-import request.RequestType.COMMAND_EXECUTE
-import request.RequestType.REFRESH_SAMPLES_INFORMATION
+import request.RequestType.*
 import java.util.*
 
 object ServerHandler {
 
     private const val timeOutNumber = 20
     private var timeOutCounter = 0
+    var isRegistered = false
 
     private val needToSentMessages: Deque<RequestPacket> = LinkedList()
     private val connectionRequestPacket = RequestPacket(REFRESH_SAMPLES_INFORMATION)
@@ -71,15 +71,24 @@ object ServerHandler {
 
 
     private fun getRequestPacketFromClientByCLI(): RequestPacket {
-        var executePacketFromClient: Pair<ExecutePacket?, String?>
-        do {
-            println("--Write down the command:")
-            val messageFromClient = readln()
-            executePacketFromClient = ExecutePacketBuilder().getByMessage(messageFromClient)
-            if (executePacketFromClient.first == null)
-                println(executePacketFromClient.second)
-        } while (executePacketFromClient.first == null)
-        return RequestPacket(COMMAND_EXECUTE, executePacket = executePacketFromClient.first)
+
+        if (!isRegistered) {
+            println("Write down the login:")
+            val login = readln()
+            println("Write down the password:")
+            val pass = readln()
+            return RequestPacket(LOGIN, login = login, pass = pass)
+        } else {
+            var executePacketFromClient: Pair<ExecutePacket?, String?>
+            do {
+                println("--Write down the command:")
+                val messageFromClient = readln()
+                executePacketFromClient = ExecutePacketBuilder().getByMessage(messageFromClient)
+                if (executePacketFromClient.first == null)
+                    println(executePacketFromClient.second)
+            } while (executePacketFromClient.first == null)
+            return RequestPacket(COMMAND_EXECUTE, executePacket = executePacketFromClient.first)
+        }
     }
 
 

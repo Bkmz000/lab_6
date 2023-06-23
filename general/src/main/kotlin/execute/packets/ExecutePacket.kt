@@ -10,6 +10,7 @@ open class ExecutePacket(
     val listOfStringArgs: MutableList<String>? = null,
     val product: Product? = null,
     val listOfExecutePacketsForScript: MutableList<ExecutePacket>? = null,
+    val token:String? = null,
     ) {
 
     override fun toString(): String {

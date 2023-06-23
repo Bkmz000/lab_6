@@ -1,11 +1,13 @@
 package server.command.interpritation
 
+import PasswordUtils
+import collection.TokensForUser
+import collection.Users
 import com.google.gson.GsonBuilder
 import command.execute.AllExecuteCommands.samples
 import execute.packets.ExecutePacket
 import request.RequestPacket
-import request.RequestType.COMMAND_EXECUTE
-import request.RequestType.REFRESH_SAMPLES_INFORMATION
+import request.RequestType.*
 import server.command.execute.builders.ExecuteCommandBuilder
 import server.command.invoke.ExecuteInvoker
 
@@ -27,8 +29,13 @@ object RequestFromClientHandler {
                 val result = invokeExecuteCommandAndGetResult(executePacket!!)
                 RequestPacket(COMMAND_EXECUTE, message = result)
             }
-
-            REFRESH_SAMPLES_INFORMATION -> RequestPacket(REFRESH_SAMPLES_INFORMATION, executeSamples =  samples)
+            REFRESH_SAMPLES_INFORMATION -> {
+                RequestPacket(REFRESH_SAMPLES_INFORMATION, executeSamples =  samples)
+            }
+            LOGIN -> {
+                val result = createTokenOrFailureLogin(requestPacket)
+                RequestPacket(LOGIN, message = result, login = requestPacket.login)
+            }
         }
 
         return resultOfRequest
@@ -41,6 +48,19 @@ object RequestFromClientHandler {
         } catch (e: Exception){
             null
         }
+    }
+
+    private fun createTokenOrFailureLogin(requestPacket: RequestPacket) : String?{
+        val loginFromUser = requestPacket.login
+        val passFromUser = requestPacket.pass
+        if (Users.loginPass.containsKey(loginFromUser)) {
+            if(PasswordUtils.isExpectedPassword(passFromUser!!, Users.loginPass[loginFromUser]!!)) {
+                val randomToken = (0..10000000).random().toString()
+                TokensForUser.userTokens[randomToken] = requestPacket.login!!
+                return randomToken.toString()
+            }
+        }
+        return null
     }
 
     private fun invokeExecuteCommandAndGetResult(executePacket: ExecutePacket) : String {

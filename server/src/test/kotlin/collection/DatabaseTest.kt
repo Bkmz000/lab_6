@@ -22,7 +22,7 @@ class DatabaseTest {
         transaction {
 
             SchemaUtils.setSchema(Schema("public"))
-            val res = products.selectAll()
+            val res = productsFromDataBase.selectAll()
             res.forEach {
                 println(it)
             }

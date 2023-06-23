@@ -1,7 +1,6 @@
 import execute.sample.ExecuteSample
 import request.RequestPacket
-import request.RequestType.COMMAND_EXECUTE
-import request.RequestType.REFRESH_SAMPLES_INFORMATION
+import request.RequestType.*
 
 object ServerRequestProcessor {
 
@@ -15,6 +14,15 @@ object ServerRequestProcessor {
             }
             REFRESH_SAMPLES_INFORMATION -> {
                 refreshSamplesInformation(requestPacket.executeSamples!!)
+            }
+            LOGIN -> {
+                if(requestPacket.message == null) {
+                    println("Invalid username or password")
+                } else {
+                    Token.token = requestPacket.message!!
+                    Token.rightLogin = requestPacket.login!!
+                    ServerHandler.isRegistered = true
+                }
             }
         }
 
